@@ -1,0 +1,307 @@
+openapi: 3.0.0
+info:
+  title: online-ordering-platform
+  description: This platform will enable customers to order products online
+  termsOfService: https://smartbear.com/terms-of-use
+  contact:
+    name: Kithma
+    url: smartbear.com
+    email: kithmamadushani1@gmail.com
+  license:
+    name: SmartBear License
+    url: http://license.foo.com
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/API-Docs4/online-ordering-platform/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://virtserver.swaggerhub.com/API-Docs4/Online-Ordering-Platform/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://prod.foo.com
+  description: Prod Server
+paths:
+  /products:
+    get:
+      description: View products
+      operationId: productsGET
+      parameters:
+      - name: pageSize
+        in: query
+        description: The amount of products returned
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 20
+          minimum: 10
+          type: integer
+          example: 15
+      - name: pageIndex
+        in: query
+        description: The page to return products
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 5
+          minimum: 1
+          type: integer
+          example: 2
+      responses:
+        "200":
+          description: Successful pull of products info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+                x-content-type: application/json
+      x-swagger-router-controller: Default
+    post:
+      description: Create a product
+      operationId: productsPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/products_body'
+        required: true
+      responses:
+        "200":
+          description: Successfully created a product
+      x-swagger-router-controller: Default
+  /products/{productId}:
+    get:
+      description: View detailed information about a given product
+      operationId: productsProductIdGET
+      parameters:
+      - name: productId
+        in: path
+        description: The information about the product
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 4
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+                x-content-type: application/json
+      x-swagger-router-controller: Default
+    put:
+      description: Update a product/ Update units in store (when placing an order/
+        cancelling an order)
+      operationId: productsProductIdPUT
+      parameters:
+      - name: productId
+        in: path
+        description: The information about the product
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/products_productId_body'
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the product
+      x-swagger-router-controller: Default
+  /orders:
+    get:
+      description: View previous orders
+      operationId: ordersGET
+      parameters:
+      - name: pageSize
+        in: query
+        description: The amount of previous orders returned
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 20
+          minimum: 10
+          type: integer
+          example: 15
+      - name: pageIndex
+        in: query
+        description: The page to return previous orders
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 5
+          minimum: 1
+          type: integer
+          example: 2
+      - name: currentDate
+        in: query
+        description: Current date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: Successful pull of previous orders info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+                x-content-type: application/json
+      x-swagger-router-controller: Default
+    post:
+      description: Place an order
+      operationId: ordersPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orders_body'
+        required: true
+      responses:
+        "200":
+          description: Successfully placed an order
+      x-swagger-router-controller: Default
+  /orders/{orderId}:
+    put:
+      description: Cancel an order
+      operationId: ordersOrderIdPUT
+      parameters:
+      - name: orderId
+        in: path
+        description: The information about the order
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orders_orderId_body'
+        required: true
+      responses:
+        "200":
+          description: Successfully cancelled the order
+      x-swagger-router-controller: Default
+components:
+  schemas:
+    inline_response_200:
+      properties:
+        productId:
+          type: integer
+          example: 4
+        productName:
+          type: string
+          example: John Doe
+        unitPrice:
+          type: number
+          example: 15.5
+        unitsInStore:
+          type: integer
+          example: 4
+      example:
+        unitPrice: 15.5
+        productId: 4
+        productName: John Doe
+        unitsInStore: 4
+    products_body:
+      type: object
+      properties:
+        productId:
+          type: integer
+          example: 4
+        productName:
+          type: string
+          example: John Doe
+        unitPrice:
+          type: number
+          example: 15.5
+        unitsInStore:
+          type: integer
+          example: 4
+    products_productId_body:
+      type: object
+      properties:
+        productId:
+          type: integer
+          example: 4
+        productName:
+          type: string
+          example: John Doe
+        unitPrice:
+          type: number
+          example: 15.5
+        unitsInStore:
+          type: integer
+          example: 4
+    inline_response_200_1:
+      properties:
+        orderId:
+          type: integer
+          example: 4
+        customerId:
+          type: integer
+          example: 4
+        orderDate:
+          type: string
+          format: date
+          example: 2021-01-01
+        status:
+          type: string
+          example: active
+          enum:
+          - active
+          - deleted
+      example:
+        orderId: 4
+        customerId: 4
+        orderDate: 2021-01-01T00:00:00.000+00:00
+        status: active
+    orders_body:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          example: 4
+        customerId:
+          type: integer
+          example: 1
+        orderDate:
+          type: string
+          format: date
+          example: 2021-01-01
+        status:
+          type: string
+          example: active
+          enum:
+          - active
+          - deleted
+    orders_orderId_body:
+      type: object
+      properties:
+        status:
+          type: string
+          example: deleted
+          enum:
+          - active
+          - deleted
