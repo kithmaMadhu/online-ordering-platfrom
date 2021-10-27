@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Media } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+
 class Menu extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            products: [] 
+            products: [], 
+            selectedProduct: null
         };
     }
 
@@ -20,20 +22,40 @@ class Menu extends Component {
         this.callgetProductsAPI();
     }
 
+    onProductSelect(product){
+        this.setState({selectedProduct: product});
+    }
+
+    renderProduct(product){
+        if (product != null){
+            return(
+                <Card>
+                    <CardImg width="100%" src={product.image} alt={product.product_name} />
+                    <CardBody>
+                        <CardTitle>{product.product_name}</CardTitle>
+                        <CardText>Unit Price(Rs.) : {product.unit_price}</CardText>
+                    </CardBody>
+                </Card>
+            )
+        }
+        else{
+            return(
+                <div></div>
+            )
+        }
+    }
+
     render() {
         
         const menu = this.state.products.map((product) => {
             return (
-                <div key={product.product_id} className="col-12 mt-5">
-                    <Media tag="li">
-                        <Media left middle>
-                            <Media object src={product.image} alt={product.product_name} />
-                        </Media>
-                        <Media body className="ml-5">
-                            <Media heading>{product.product_name}</Media>
-                            <p>Unit price: {product.unit_price}</p>
-                        </Media>
-                    </Media>
+                <div key={product.product_id} className="col-12 col-md-5 m-1">
+                    <Card onClick={() => this.onProductSelect(product)}>
+                            <CardImg width="100%" src={product.image} alt={product.product_name} />
+                        <CardImgOverlay body className="ml-5">
+                            <CardTitle>{product.product_name}</CardTitle>
+                        </CardImgOverlay>
+                    </Card>
                 </div>
             );
         });
@@ -41,9 +63,10 @@ class Menu extends Component {
         return (
           <div className="container">
               <div className="row">
-                <Media list>
                     {menu}
-                </Media>
+              </div>
+              <div className="row">
+                    {this.renderProduct(this.state.selectedProduct)}
               </div>
           </div>
         );

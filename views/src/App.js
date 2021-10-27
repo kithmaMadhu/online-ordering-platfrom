@@ -23,7 +23,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div>
         <Navbar dark color="primary">
           <div className="container">
             <NavbarBrand href="/">Online Ordering Platform</NavbarBrand>

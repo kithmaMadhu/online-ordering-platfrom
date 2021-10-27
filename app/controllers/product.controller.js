@@ -15,6 +15,7 @@ exports.create = (req, res) => {
         product_name: req.body.product_name,
         unit_price: req.body.unit_price,
         units_in_store: req.body.units_in_store,
+        image: req.body.image //
     });
 
     // Save Product in the database

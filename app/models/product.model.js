@@ -6,6 +6,7 @@ const Product = function(product) {
   this.product_name = product.product_name;
   this.unit_price = product.unit_price;
   this.units_in_store = product.units_in_store;
+  this.image = product.image; //
 };
 
 Product.create = (newProduct, result) => {
