@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import { Navbar, NavbarBrand } from 'reactstrap';
-import logo from './logo.svg';
 import './App.css';
-import Menu from './components/MenuComponent';
+import Main from './components/MainComponent';
+import { BrowserRouter } from 'react-router-dom';
+
 //import { render } from '../../server';
 
 class App extends Component {
-  constructor(props) {
+  /* constructor(props) {
     super(props);
     this.state = { apiResponse: "" };
   }
@@ -19,18 +19,16 @@ class App extends Component {
 
   componentWillMount() {
       this.callAPI();
-  }
+  } */
 
   render() {
     return (
-      <div>
-        <Navbar dark color="primary">
-          <div className="container">
-            <NavbarBrand href="/">Online Ordering Platform</NavbarBrand>
-          </div>
-        </Navbar>
-        <Menu />
-      </div>
+      <BrowserRouter>
+        <div>
+          <Main />
+        </div>
+      </BrowserRouter>
+      
     );
   }
 }

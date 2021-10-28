@@ -29,6 +29,7 @@ class Menu extends Component {
     renderProduct(product){
         if (product != null){
             return(
+                <div className="col-12 col-md-10 m-1">
                 <Card>
                     <CardImg width="100%" src={product.image} alt={product.product_name} />
                     <CardBody>
@@ -36,6 +37,7 @@ class Menu extends Component {
                         <CardText>Unit Price(Rs.) : {product.unit_price}</CardText>
                     </CardBody>
                 </Card>
+                </div>
             )
         }
         else{
@@ -61,14 +63,14 @@ class Menu extends Component {
         });
 
         return (
-          <div className="container">
-              <div className="row">
-                    {menu}
-              </div>
-              <div className="row">
-                    {this.renderProduct(this.state.selectedProduct)}
-              </div>
-          </div>
+            <div className="container">
+                <div className="row">
+                        {menu}
+                </div>
+                <div className="row">
+                        {this.renderProduct(this.state.selectedProduct)}
+                </div>
+            </div>
         );
     }
 
