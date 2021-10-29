@@ -9,8 +9,9 @@ function RenderProduct({product}){
             <Card>
                 <CardImg width="100%" src={product.image} alt={product.product_name} />
                 <CardBody>
-                    <CardTitle>{product.product_name}</CardTitle>
-                    <CardText>Unit Price(Rs.) : {product.unit_price}</CardText>
+                    <CardTitle>Item Name : {product.product_name}</CardTitle>
+                    <CardTitle>Unit Price(Rs.) : {product.unit_price}</CardTitle>
+                    <CardTitle>Stock available : {product.units_in_store}</CardTitle>
                 </CardBody>
             </Card>
             </div>

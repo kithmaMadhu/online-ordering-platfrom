@@ -11,11 +11,12 @@ exports.create = (req, res) => {
 
     // Create a Customer
     const customer = new Customer({
-        customer_id: req.body.customer_id,
         customer_name: req.body.customer_name,
         address: req.body.address,
         email: req.body.email,
-        mobile_num: req.body.mobile_num
+        mobile_num: req.body.mobile_num,
+        username: req.body.username, //
+        password: req.body.password  //
     });
 
     // Save Customer in the database

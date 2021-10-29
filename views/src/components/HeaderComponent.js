@@ -44,6 +44,18 @@ class Header extends Component{
                         </Nav>
                     </Collapse>
                 </div>
+
+                <div className="col-12 col-sm-4 align-self-center">
+                    <Nav navbar>
+                        <NavItem>
+                            <NavLink className="nav-link" to='/login'><span className="fa fa-sign-in fa-lg"></span> Login</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink className="nav-link" to='/register'><span className="fa fa-user fa-lg"></span> Register</NavLink>
+                        </NavItem>
+                    </Nav>
+                </div>
+
                 </Navbar>
                 <Jumbotron>
                 <div className="container">

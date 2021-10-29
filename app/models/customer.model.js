@@ -2,11 +2,12 @@ const sql = require("./db.js");
 
 // constructor
 const Customer = function(customer) {
-  this.customer_id = customer.customer_id;
   this.customer_name = customer.customer_name;
   this.address = customer.address;
   this.email = customer.email;
   this.mobile_num = customer.mobile_num;
+  this.username = customer.username;  //
+  this.password = customer.password;  //
 };
 
 Customer.create = (newCustomer, result) => {

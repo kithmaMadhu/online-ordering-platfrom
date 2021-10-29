@@ -6,6 +6,7 @@ import Menu from './MenuComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import ProductDetail from './ProductDetailComponent';
+import Register from './RegisterComponent';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 
@@ -47,6 +48,8 @@ class Main extends Component {
         <Header />
         <Switch>
             <Route path='/home' component={HomePage} />
+            {/* <Route path='/login' component={Login} /> */}
+            <Route path='/register' component={Register} /> 
             <Route exact path='/menu' component={Menu} />
             <Route path='/menu/:productId' component={ProductWithId} /> 
             <Route exact path='/contactus' component={Contact} />
