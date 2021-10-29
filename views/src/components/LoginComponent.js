@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem,
     Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
 
-class Register extends Component{
+class Login extends Component{
 
     constructor(props) {
         super(props);
 
         this.state = {
-            name: '',
-            address: '',
-            email: '',
-            telnum: '',
             username: '',
             password: '',
         };
@@ -46,65 +42,28 @@ class Register extends Component{
     handleSubmit(event) {
         event.preventDefault();
 
-        const url = 'http://localhost:8000/customers'
+        const url = 'http://localhost:8000/login'
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ customer_name: this.state.name, address: this.state.address, email: this.state.email, mobile_num: this.state.telnum, username: this.state.username
-                , password: this.state.password })
+            body: JSON.stringify({ username: this.state.username , password: this.state.password })
         };
         fetch(url, requestOptions)
-            .then(response => console.log('Submitted successfully'))
-            .catch(error => console.log('Form submit error', error))
+            .then(response => console.log(response))
+            .catch(error => console.log('Login error', error))
 
-        console.log('Successfully registered: ' + JSON.stringify(this.state));
-        alert('Successfully registered: ' + JSON.stringify(this.state)); 
+        /* console.log('Successfully registered: ' + JSON.stringify(this.state));
+        alert('Successfully registered: ' + JSON.stringify(this.state)); */
     }
 
     render() {
         return(
                 <div className="row row-content">
                     <div className="col-12">
-                      <h3>Register</h3>
+                      <h3>Login</h3>
                    </div>
                    <div className="col-12 col-md-9">
                         <Form onSubmit={this.handleSubmit}>
-                        <FormGroup row style={{"display": "block"}}>
-                                <Label htmlFor="name" md={2}>Name</Label>
-                                <Col md={10}>
-                                    <Input type="text" id="name" name="name"
-                                        placeholder="Name"
-                                        value={this.state.name}
-                                        onChange={this.handleInputChange} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row style={{"display": "block"}}>
-                                <Label htmlFor="address" md={2}>Address</Label>
-                                <Col md={10}>
-                                    <Input type="text" id="address" name="address"
-                                        placeholder="Address"
-                                        value={this.state.address}
-                                        onChange={this.handleInputChange} />
-                                </Col>                        
-                            </FormGroup>
-                            <FormGroup row style={{"display": "block"}}>
-                                <Label htmlFor="email" md={2}>Email</Label>
-                                <Col md={10}>
-                                    <Input type="email" id="email" name="email"
-                                        placeholder="Email"
-                                        value={this.state.email}
-                                        onChange={this.handleInputChange} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row style={{"display": "block"}}>
-                            <Label htmlFor="telnum" md={2}>Tel No.</Label>
-                                <Col md={10}>
-                                    <Input type="tel" id="telnum" name="telnum"
-                                        placeholder="Tel. number"
-                                        value={this.state.telnum}
-                                        onChange={this.handleInputChange} />
-                                </Col>
-                            </FormGroup>
                             <FormGroup row style={{"display": "block"}}>
                                 <Label htmlFor="username" md={2}>Username</Label>
                                 <Col md={10}>
@@ -127,7 +86,7 @@ class Register extends Component{
                                 <Label md={2}></Label>
                                 <Col md={{size: 10, offset: 2}}>
                                     <Button type="submit" color="primary">
-                                        Register
+                                        Login
                                     </Button>
                                 </Col>
                             </FormGroup>
@@ -138,4 +97,4 @@ class Register extends Component{
     }
 }
 
-export default Register;   
+export default Login;   
