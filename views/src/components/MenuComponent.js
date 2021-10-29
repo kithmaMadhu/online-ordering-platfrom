@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle,
+    Breadcrumb, BreadcrumbItem  } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
 
 class Menu extends Component {
 
@@ -26,7 +29,7 @@ class Menu extends Component {
         this.setState({selectedProduct: product});
     }
 
-    renderProduct(product){
+    /* renderProduct(product){
         if (product != null){
             return(
                 <div className="col-12 col-md-10 m-1">
@@ -45,18 +48,20 @@ class Menu extends Component {
                 <div></div>
             )
         }
-    }
+    } */
 
     render() {
         
         const menu = this.state.products.map((product) => {
             return (
                 <div key={product.product_id} className="col-12 col-md-5 m-1">
-                    <Card onClick={() => this.onProductSelect(product)}>
+                    <Card>
+                        <Link to={`/menu/${product.product_id}`} >
                             <CardImg width="100%" src={product.image} alt={product.product_name} />
                         <CardImgOverlay body className="ml-5">
                             <CardTitle>{product.product_name}</CardTitle>
                         </CardImgOverlay>
+                        </Link>
                     </Card>
                 </div>
             );
@@ -65,11 +70,21 @@ class Menu extends Component {
         return (
             <div className="container">
                 <div className="row">
-                        {menu}
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>Menu</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>Menu</h3>
+                        <hr />
+                    </div>                
                 </div>
                 <div className="row">
-                        {this.renderProduct(this.state.selectedProduct)}
+                        {menu}
                 </div>
+                {/* <div className="row">
+                        {this.renderProduct(this.state.selectedProduct)}
+                </div> */}
             </div>
         );
     }
