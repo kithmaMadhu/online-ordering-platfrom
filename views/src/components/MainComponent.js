@@ -8,6 +8,7 @@ import Contact from './ContactComponent';
 import ProductDetail from './ProductDetailComponent';
 import Register from './RegisterComponent';
 import Login from './LoginComponent';
+import Orders from './OrdersComponent';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 
@@ -53,6 +54,7 @@ class Main extends Component {
             <Route path='/register' component={Register} /> 
             <Route exact path='/menu' component={Menu} />
             <Route path='/menu/:productId' component={ProductWithId} /> 
+            <Route exact path='/orders' component={Orders} />
             <Route exact path='/contactus' component={Contact} />
             <Redirect to="/home" />
         </Switch>

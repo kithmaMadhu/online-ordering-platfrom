@@ -6,6 +6,9 @@ module.exports = app => {
   
     // Retrieve all orders
     app.get("/orders", orders.findAll);
+
+    // Retrieve count of products with same order_id in order_details
+    app.get("/ordersProductCount", orders.findProductCount);
   
     // Retrieve a single order with orderId
     app.get("/orders/:orderId", orders.findOne);

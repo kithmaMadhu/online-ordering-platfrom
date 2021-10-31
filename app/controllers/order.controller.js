@@ -40,6 +40,18 @@ exports.findAll = (req, res) => {
     });
 };
 
+// Retrieve count of products with same order_id in order_details
+exports.findProductCount = (req, res) => {
+  Order.getProductCount((err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving orders products count."
+        });
+      else res.send(data);
+  });
+};
+
 // Find a single order with a orderId
 exports.findOne = (req, res) => {
     Order.findById(req.params.orderId, (err, data) => {
