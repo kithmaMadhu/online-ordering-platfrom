@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle,
     Breadcrumb, BreadcrumbItem  } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -14,8 +14,10 @@ class Orders extends Component {
             selectedOrder: null,
             orderProductCount: [],
             newId: "",
-            rowSpanCount: 0
+            rowSpanCount: 0,
         };
+
+        this.callcancelOrderAPI = this.callcancelOrderAPI.bind(this);
     }
 
     callgetOrdersAPI() {
@@ -37,6 +39,22 @@ class Orders extends Component {
 
     onProductSelect(order){
         this.setState({selectedOrder: order});
+    }
+
+    callcancelOrderAPI(param, customerId, orderDate) {
+
+        const url = 'http://localhost:8000/orders/'+param
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ customer_id: customerId, order_date: orderDate, status: "deleted" })
+        };
+        fetch(url, requestOptions)
+            .then(response => console.log('Order was cancelled'))
+            .catch(error => console.log('Error while cancelling order: ', error))
+
+        console.log('Cancelled order: ' + JSON.stringify(param));
+        alert('Cancelled order: ' + JSON.stringify(param)); 
     }
 
     /* renderProduct(product){
@@ -142,7 +160,10 @@ class Orders extends Component {
                                                 </td>
                                                 <td><span className="responsive-mobile-heading"></span>{order.quantity}</td>
                                                 <td><span className="responsive-mobile-heading"></span>{<div className="row">
-                                                        <button className="btn" 
+                                                        <button className="btn" onClick={() => {
+                                                            this.callcancelOrderAPI(order.order_id, order.customer_id);
+                                                            window.location.reload();
+                                                        }}
                                                                 title="Delete Order">
                                                         <i className="fa fa-trash fa-lg"/>
                                                         </button>

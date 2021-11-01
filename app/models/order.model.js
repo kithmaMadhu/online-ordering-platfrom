@@ -87,8 +87,8 @@ Order.getAll = result => {
 
 Order.updateById = (id, order, result) => {
   sql.query(
-    "UPDATE orders SET customer_id = ?, order_date = ?, status = ? WHERE order_id = ?",
-    [order.customer_id, order.order_date, order.status, id],
+    "UPDATE orders SET customer_id = ?, status = ? WHERE order_id = ?",
+    [order.customer_id, order.status, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
