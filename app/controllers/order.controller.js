@@ -52,6 +52,18 @@ exports.findProductCount = (req, res) => {
   });
 };
 
+// Find next order id
+exports.findNextOrderId = (req, res) => {
+  Order.getMaxOrderId((err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving orders id."
+        });
+      else res.send(data);
+  });
+};
+
 // Find a single order with a orderId
 exports.findOne = (req, res) => {
     Order.findById(req.params.orderId, (err, data) => {

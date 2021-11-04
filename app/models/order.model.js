@@ -72,6 +72,19 @@ Order.getProductCount = result => {
   });
 };
 
+Order.getMaxOrderId = result => {
+  sql.query("SELECT max(order_id) FROM orders", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("max order id: ", res);
+    result(null, res);
+  });
+};
+
 Order.getAll = result => {
   sql.query("SELECT orders.order_id, orders.order_date, orders.status, order_details.product_id, order_details.quantity, customers.customer_id, customers.customer_name, customers.address, customers.email, customers.mobile_num, products.product_name, products.unit_price, products.units_in_store, products.image FROM orders JOIN order_details ON orders.order_id = order_details.order_id JOIN customers ON orders.customer_id = customers.customer_id JOIN products ON products.product_id = order_details.product_id WHERE orders.status = 'active' order by order_id asc", (err, res) => {
     if (err) {

@@ -10,6 +10,9 @@ module.exports = app => {
     // Retrieve count of products with same order_id in order_details
     app.get("/ordersProductCount", orders.findProductCount);
   
+    // Retrieve next order id
+    app.get("/getMaxOrderId", orders.findNextOrderId);
+
     // Retrieve a single order with orderId
     app.get("/orders/:orderId", orders.findOne);
 

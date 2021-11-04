@@ -1,7 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle,
     Breadcrumb, BreadcrumbItem  } from 'reactstrap';
+import Drawer from '@material-ui/core/Drawer';
 import { Link } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import styled from 'styled-components';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import Badge from '@material-ui/core/Badge';
+import Cart from './CartComponent';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 
 class Menu extends Component {
@@ -11,7 +18,9 @@ class Menu extends Component {
 
         this.state = {
             products: [], 
-            selectedProduct: null
+            selectedProduct: null,
+            cartOpen: false,
+            cartItems: []
         };
     }
 
@@ -51,10 +60,50 @@ class Menu extends Component {
     } */
 
     render() {
+        console.log(this.state.cartItems);
+        const StyledButton = styled(IconButton)`
+            position: fixed;
+            z-index: 100;
+            right: 20px;
+            top: 20px;
+        `;
+
+        const getTotalItems = (items) => 
+            items.reduce((ack, item) => ack + item.quantity, 0);
+
+        /* const handleAddToCart = (clickedItem) => {
+            this.setState({cartItems: (prev => {
+                const isItemInCart = prev.find(item => item.product_id === clickedItem.product_id)
+                if(isItemInCart){
+                    return prev.map(item => 
+                        item.product_id === clickedItem.product_id ? {...item, quantity: item.quantity + 1}
+                        : item
+                    );
+                }
+
+                return [...prev, {...clickedItem, quantity: 1}];
+            })
+            })
+        }; */
+
+        const handleRemoveFromCart = () => null;
+
         
         const menu = this.state.products.map((product) => {
             return (
                 <div key={product.product_id} className="col-12 col-md-5 m-1">
+                    <Drawer variant="temporary" anchor='right' open={this.state.cartOpen} onClose={() => this.setState({cartOpen: false})}>
+                    <Cart
+                    cartItems={this.state.cartItems}
+                    //addToCart={handleAddToCart}
+                    removeFromCart={handleRemoveFromCart}
+                    />
+                    </Drawer>
+                    <StyledButton onClick={() => this.setState({cartOpen: true})}>
+                        <Badge badgeContent color='error'>
+                            <AddShoppingCartIcon />
+                        </Badge>
+                    </StyledButton>
                     <Card>
                         <Link to={`/menu/${product.product_id}`} >
                             <CardImg width="100%" src={product.image} alt={product.product_name} />
@@ -62,6 +111,10 @@ class Menu extends Component {
                             <CardTitle>{product.product_name}</CardTitle>
                         </CardImgOverlay>
                         </Link>
+                        <Card>
+                        <button className="btn"  onClick={() => this.setState({cartItems: this.state.cartItems.filter(item => item != product).concat(product), 
+                        cartOpen: true})} style={{"background-color": "#0d6efda8"}}>Add to Cart</button>
+                        </Card>
                     </Card>
                 </div>
             );
