@@ -23,6 +23,21 @@ function callPlaceOrder(orderId, customerId) {
   alert('Successfully ordered '  /* + JSON.stringify(orderId) */ ); 
 };
 
+function callPlaceOrderProducts(orderId, productId, quantity) {
+
+  const url = 'http://localhost:8000/orderProducts'
+  const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order_id: orderId, product_id: productId, quantity: quantity})
+  };
+  fetch(url, requestOptions)
+      .then(response => console.log('Ordered successfully'))
+      .catch(error => console.log('Error occured while ordering', error))
+
+  console.log('Placed order '  /*  + JSON.stringify(orderId) */ );
+};
+
 const Cart = (props) => {
     const calculateTotal = (items) =>
       items.reduce((ack, item) => ack + item.amount * item.price, 0);
@@ -39,7 +54,10 @@ const Cart = (props) => {
           removeFromCart={props.removeFromCart}/>
         ))}
         <h2>Total: ${calculateTotal(props.cartItems).toFixed(2)}</h2>
-        <button className="btn" onClick={() => callPlaceOrder(7,2)} style={{"background-color": "#0d6efda8"}}>Place Order</button>
+        <button className="btn" onClick={() => { callPlaceOrder(7,2);
+                                props.cartItems.map(item => (
+                                  callPlaceOrderProducts(7,item.product_id, 2)
+                                )); }} style={{"background-color": "#0d6efda8"}}>Place Order</button>
       </div>
     );
   };
