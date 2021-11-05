@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle,
-    Breadcrumb, BreadcrumbItem  } from 'reactstrap';
+    Breadcrumb, BreadcrumbItem, Input  } from 'reactstrap';
 import Drawer from '@material-ui/core/Drawer';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
@@ -20,8 +20,21 @@ class Menu extends Component {
             products: [], 
             selectedProduct: null,
             cartOpen: false,
-            cartItems: []
+            cartItems: [],
+            quantity: 1
         };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+    
+        this.setState({
+          [name]: value
+        });
     }
 
     callgetProductsAPI() {
@@ -111,9 +124,12 @@ class Menu extends Component {
                             <CardTitle>{product.product_name}</CardTitle>
                         </CardImgOverlay>
                         </Link>
+                        <Card>Enter quantity: <Input type="text" id="quantity" name="quantity"
+                                        placeholder="Quantity"
+                                        onChange={this.handleInputChange} /></Card>
                         <Card>
-                        <button className="btn"  onClick={() => this.setState({cartItems: this.state.cartItems.filter(item => item != product).concat(product), 
-                        cartOpen: true})} style={{"background-color": "#0d6efda8"}}>Add to Cart</button>
+                        <button className="btn"  onClick={() => {product.quantity = this.state.quantity; this.setState({cartItems: this.state.cartItems.filter(item => item.product_id != product.product_id).concat(product), 
+                        cartOpen: true});}} style={{"background-color": "#0d6efda8"}}>Add to Cart</button>
                         </Card>
                     </Card>
                 </div>

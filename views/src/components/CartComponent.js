@@ -40,7 +40,7 @@ function callPlaceOrderProducts(orderId, productId, quantity) {
 
 const Cart = (props) => {
     const calculateTotal = (items) =>
-      items.reduce((ack, item) => ack + item.amount * item.price, 0);
+      items.reduce((ack, item) => ack + item.quantity * item.unit_price, 0);
   
     return (
         <div className="container">
@@ -53,7 +53,7 @@ const Cart = (props) => {
           addToCart={props.addToCart}
           removeFromCart={props.removeFromCart}/>
         ))}
-        <h2>Total: ${calculateTotal(props.cartItems).toFixed(2)}</h2>
+        <h2>Total: Rs.{calculateTotal(props.cartItems).toFixed(2)}</h2>
         <button className="btn" onClick={() => { callPlaceOrder(7,2);
                                 props.cartItems.map(item => (
                                   callPlaceOrderProducts(7,item.product_id, 2)
