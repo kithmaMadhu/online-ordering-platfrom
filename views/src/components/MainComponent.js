@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
@@ -12,26 +12,20 @@ import Orders from './OrdersComponent';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 
-class Main extends Component {
-    constructor(props) {
-        super(props);
-    
-        this.state = {
-            products: [], 
-        };
-    }
+function Main() {
 
-    callgetProductsAPI() {
+    const [products, setProducts] = useState([]);
+
+    const callgetProductsAPI = () => {
         fetch("http://localhost:8000/products")
             .then(res => res.text())
-            .then(res => this.setState({ products: JSON.parse(res) }));
+            .then(res => setProducts(JSON.parse(res)));
     }
+    
+    useEffect(()=>{
+        callgetProductsAPI();
+      },[])
 
-    componentWillMount() {
-        this.callgetProductsAPI();
-    }
-
-    render() {
 
     const HomePage = () => {
         return(
@@ -41,7 +35,7 @@ class Main extends Component {
 
      const ProductWithId = ({match}) => {
         return(
-            <ProductDetail product={this.state.products.filter((product) => product.product_id === parseInt(match.params.productId,10))[0]} />
+            <ProductDetail product={products.filter((product) => product.product_id === parseInt(match.params.productId,10))[0]} />
         );
     }; 
         
@@ -61,7 +55,6 @@ class Main extends Component {
         <Footer />
       </div>
     );
-  }
 }
 
 export default Main;

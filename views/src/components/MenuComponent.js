@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle,
     Breadcrumb, BreadcrumbItem, Input  } from 'reactstrap';
 import Drawer from '@material-ui/core/Drawer';
@@ -11,44 +11,26 @@ import Cart from './CartComponent';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 
-class Menu extends Component {
+function Menu() {
 
-    constructor(props) {
-        super(props);
+    const [products, setProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState();
+    const [cartOpen, setCartOpen] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [quantity, setQuantity] = useState(1);
 
-        this.state = {
-            products: [], 
-            selectedProduct: null,
-            cartOpen: false,
-            cartItems: [],
-            quantity: 1
-        };
-
-        this.handleInputChange = this.handleInputChange.bind(this);
-    }
-
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-    
-        this.setState({
-          [name]: value
-        });
-    }
-
-    callgetProductsAPI() {
+    const callgetProductsAPI = () => {
         fetch("http://localhost:8000/products")
             .then(res => res.text())
-            .then(res => this.setState({ products: JSON.parse(res) }));
+            .then(res => setProducts(JSON.parse(res) ));
     }
 
-    componentWillMount() {
-        this.callgetProductsAPI();
-    }
+    useEffect(() => {
+        callgetProductsAPI();
+    }, [])
 
-    onProductSelect(product){
-        this.setState({selectedProduct: product});
+    const onProductSelect = (product) => {
+        setSelectedProduct(product);
     }
 
     /* renderProduct(product){
@@ -72,91 +54,91 @@ class Menu extends Component {
         }
     } */
 
-    render() {
-        console.log(this.state.cartItems);
-        const StyledButton = styled(IconButton)`
-            position: fixed;
-            z-index: 100;
-            right: 20px;
-            top: 20px;
-        `;
+    console.log(cartItems);
+    const StyledButton = styled(IconButton)`
+        position: fixed;
+        z-index: 100;
+        right: 20px;
+        top: 20px;
+    `;
 
-        const getTotalItems = (items) => 
-            items.reduce((ack, item) => ack + item.quantity, 0);
+    const getTotalItems = (items) => 
+        items.reduce((ack, item) => ack + item.quantity, 0);
 
-        /* const handleAddToCart = (clickedItem) => {
-            this.setState({cartItems: (prev => {
-                const isItemInCart = prev.find(item => item.product_id === clickedItem.product_id)
-                if(isItemInCart){
-                    return prev.map(item => 
-                        item.product_id === clickedItem.product_id ? {...item, quantity: item.quantity + 1}
-                        : item
-                    );
-                }
+    /* const handleAddToCart = (clickedItem) => {
+        this.setState({cartItems: (prev => {
+            const isItemInCart = prev.find(item => item.product_id === clickedItem.product_id)
+            if(isItemInCart){
+                return prev.map(item => 
+                    item.product_id === clickedItem.product_id ? {...item, quantity: item.quantity + 1}
+                    : item
+                );
+            }
 
-                return [...prev, {...clickedItem, quantity: 1}];
-            })
-            })
-        }; */
+            return [...prev, {...clickedItem, quantity: 1}];
+        })
+        })
+    }; */
 
-        const handleRemoveFromCart = () => null;
+    const handleRemoveFromCart = () => null;
 
-        
-        const menu = this.state.products.map((product) => {
-            return (
-                <div key={product.product_id} className="col-12 col-md-5 m-1">
-                    <Drawer variant="temporary" anchor='right' open={this.state.cartOpen} onClose={() => this.setState({cartOpen: false})}>
-                    <Cart
-                    cartItems={this.state.cartItems}
-                    //addToCart={handleAddToCart}
-                    removeFromCart={handleRemoveFromCart}
-                    />
-                    </Drawer>
-                    <StyledButton onClick={() => this.setState({cartOpen: true})}>
-                        <Badge badgeContent color='error'>
-                            <AddShoppingCartIcon />
-                        </Badge>
-                    </StyledButton>
-                    <Card>
-                        <Link to={`/menu/${product.product_id}`} >
-                            <CardImg width="100%" src={product.image} alt={product.product_name} />
-                        <CardImgOverlay body className="ml-5">
-                            <CardTitle>{product.product_name}</CardTitle>
-                        </CardImgOverlay>
-                        </Link>
-                        <Card>Enter quantity: <Input type="text" id="quantity" name="quantity"
-                                        placeholder="Quantity"
-                                        onChange={this.handleInputChange} /></Card>
-                        <Card>
-                        <button className="btn"  onClick={() => {product.quantity = this.state.quantity; this.setState({cartItems: this.state.cartItems.filter(item => item.product_id != product.product_id).concat(product), 
-                        cartOpen: true});}} style={{"background-color": "#0d6efda8"}}>Add to Cart</button>
-                        </Card>
-                    </Card>
-                </div>
-            );
-        });
-
+    
+    const menu = products.map((product) => {
         return (
-            <div className="container">
-                <div className="row">
-                    <Breadcrumb>
-                        <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>Menu</BreadcrumbItem>
-                    </Breadcrumb>
-                    <div className="col-12">
-                        <h3>Menu</h3>
-                        <hr />
-                    </div>                
-                </div>
-                <div className="row">
-                        {menu}
-                </div>
-                {/* <div className="row">
-                        {this.renderProduct(this.state.selectedProduct)}
-                </div> */}
+            <div key={product.product_id} className="col-12 col-md-5 m-1">
+                <Drawer variant="temporary" anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+                <Cart
+                cartItems={cartItems}
+                //addToCart={handleAddToCart}
+                removeFromCart={handleRemoveFromCart}
+                />
+                </Drawer>
+                <StyledButton onClick={() => setCartOpen(true)}>
+                    <Badge badgeContent color='error'>
+                        <AddShoppingCartIcon />
+                    </Badge>
+                </StyledButton>
+                <Card>
+                    <Link to={`/menu/${product.product_id}`} >
+                        <CardImg width="100%" src={product.image} alt={product.product_name} />
+                    <CardImgOverlay body className="ml-5">
+                        <CardTitle>{product.product_name}</CardTitle>
+                    </CardImgOverlay>
+                    </Link>
+                    <Card>Enter quantity: <Input type="text" id="quantity" name="quantity"
+                                    placeholder="Quantity"
+                                    onChange={(e) => {
+                                        setQuantity(e.target.value);
+                                    }} /></Card>
+                    <Card>
+                    <button className="btn"  onClick={() => {product.quantity = quantity; setCartItems(cartItems.filter(item => item.product_id != product.product_id).concat(product)); 
+                    setCartOpen(true);}} style={{"background-color": "#0d6efda8"}}>Add to Cart</button>
+                    </Card>
+                </Card>
             </div>
         );
-    }
+    });
+
+    return (
+        <div className="container">
+            <div className="row">
+                <Breadcrumb>
+                    <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
+                    <BreadcrumbItem active>Menu</BreadcrumbItem>
+                </Breadcrumb>
+                <div className="col-12">
+                    <h3>Menu</h3>
+                    <hr />
+                </div>                
+            </div>
+            <div className="row">
+                    {menu}
+            </div>
+            {/* <div className="row">
+                    {this.renderProduct(this.state.selectedProduct)}
+            </div> */}
+        </div>
+    );
 
 }
 

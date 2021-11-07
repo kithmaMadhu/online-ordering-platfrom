@@ -73,7 +73,7 @@ Order.getProductCount = result => {
 };
 
 Order.getMaxOrderId = result => {
-  sql.query("SELECT max(order_id) FROM orders", (err, res) => {
+  sql.query("SELECT max(order_id) as maxId FROM orders", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

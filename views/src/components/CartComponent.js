@@ -1,44 +1,44 @@
 import React, { Component, useState } from 'react';
 import CartItem from './CartItemComponent';
 
-function getCurrentDate(){
-  const current = new Date();
-  const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
-  return date;
-};
+function Cart(props){
 
-function callPlaceOrder(orderId, customerId) {
-
-  const url = 'http://localhost:8000/orders'
-  const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ order_id: orderId, customer_id: customerId, order_date: getCurrentDate(), status: "active" })
-  };
-  fetch(url, requestOptions)
-      .then(response => console.log('Ordered successfully'))
-      .catch(error => console.log('Error occured while ordering', error))
-
-  console.log('Placed order '  /*  + JSON.stringify(orderId) */ );
-  alert('Successfully ordered '  /* + JSON.stringify(orderId) */ ); 
-};
-
-function callPlaceOrderProducts(orderId, productId, quantity) {
-
-  const url = 'http://localhost:8000/orderProducts'
-  const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ order_id: orderId, product_id: productId, quantity: quantity})
-  };
-  fetch(url, requestOptions)
-      .then(response => console.log('Ordered successfully'))
-      .catch(error => console.log('Error occured while ordering', error))
-
-  console.log('Placed order '  /*  + JSON.stringify(orderId) */ );
-};
-
-const Cart = (props) => {
+    const getCurrentDate = () => {
+      const current = new Date();
+      const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+      return date;
+    };
+    
+    const callPlaceOrder = (orderId, customerId) => {
+    
+      const url = 'http://localhost:8000/orders'
+      const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order_id: orderId, customer_id: customerId, order_date: getCurrentDate(), status: "active" })
+      };
+      fetch(url, requestOptions)
+          .then(response => console.log('Ordered successfully'))
+          .catch(error => console.log('Error occured while ordering', error))
+    
+      console.log('Placed order '  /*  + JSON.stringify(orderId) */ );
+      alert('Successfully ordered '  /* + JSON.stringify(orderId) */ ); 
+    };
+    
+    const callPlaceOrderProducts = (orderId, productId, quantity) => {
+    
+      const url = 'http://localhost:8000/orderProducts'
+      const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order_id: orderId, product_id: productId, quantity: quantity})
+      };
+      fetch(url, requestOptions)
+          .then(response => console.log('Ordered successfully'))
+          .catch(error => console.log('Error occured while ordering', error))
+    
+      console.log('Placed order '  /*  + JSON.stringify(orderId) */ );
+    };
     const calculateTotal = (items) =>
       items.reduce((ack, item) => ack + item.quantity * item.unit_price, 0);
   

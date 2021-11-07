@@ -4,11 +4,11 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle,
 import Button from '@material-ui/core/Button';
 // Types
 
-function addToCart(product) {
+/* function addToCart(product) {
     product.quantity = product.quantity + 1;
-}
+} */
 
-const CartItem = (props) => {
+function CartItem(props) {
     if (props.item != null){
         return(
             <div className="col-12 col-md-5 m-1">
